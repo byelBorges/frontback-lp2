@@ -5,9 +5,11 @@ import TabelaClientes from "./tabelas/TabelaClientes";
 import { useState } from "react";
 import TelaMensagem from "./TelaMensagem";
 
+//Redutores/Slices são os unicos capazes de alterar o estado da store
+
 export default function TelaCadastroCliente(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    const [listaClientes, setListaClientes] = useState([]);
+    //const [listaClientes, setListaClientes] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem] = useState("");
     const [tipoMensagem, setTipoMensagem] = useState("");
