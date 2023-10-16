@@ -4,6 +4,7 @@ import FormCadCliente from "./formularios/FormCadCliente";
 import TabelaClientes from "./tabelas/TabelaClientes";
 import { useState } from "react";
 import TelaMensagem from "./TelaMensagem";
+import { UseSelector, useDispatch } from "react-redux";
 
 //Redutores/Slices são os unicos capazes de alterar o estado da store
 
@@ -36,9 +37,7 @@ export default function TelaCadastroCliente(props) {
                 <Pagina>
                     {
                         //Dinâmica em que o usuário irá alternar entre o formulario de cadastro e a visualização dos registros já cadastrados.
-                        exibirFormulario ? <FormCadCliente listaClientes={listaClientes}
-                            exibirFormulario={setExibirFormulario}
-                            setListaClientes={setListaClientes}
+                        exibirFormulario ? <FormCadCliente exibirFormulario={setExibirFormulario}
                             clienteParaEdicao={clienteParaEdicao}
                             setClienteParaEdicao={setClienteParaEdicao}
                             modoEdicao={modoEdicao}
@@ -48,9 +47,7 @@ export default function TelaCadastroCliente(props) {
                             setTipoMensagem={setTipoMensagem}
                         />
                             :
-                            <TabelaClientes listaClientes={listaClientes}
-                                exibirFormulario={setExibirFormulario}
-                                setListaClientes={setListaClientes}
+                            <TabelaClientes exibirFormulario={setExibirFormulario}
                                 clienteParaEdicao={clienteParaEdicao}
                                 setClienteParaEdicao={setClienteParaEdicao}
                                 modoEdicao={modoEdicao}

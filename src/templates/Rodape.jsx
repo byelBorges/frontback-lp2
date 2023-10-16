@@ -7,7 +7,7 @@ export default function Rodape(props) {
                 borderRadius:"5px",
                 padding: '5px',
                 margin: '3px',
-                backgroundColor: "silver"
+                backgroundColor: "silver",
                 }}>
                 <p>{props.conteudo||"Rodapé do sistema."}</p>
             </div>

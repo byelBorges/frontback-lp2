@@ -1,5 +1,8 @@
 import { Container, Form, Row, Col, FloatingLabel, Button } from "react-bootstrap"
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {adicionar, atualizar} from '../../redux/clienteReducer';
+
 export default function FormCadCliente(props) {
     //Os atributos deste objeto devem estar associados aos inputs do formulario
     const clienteVazio = {
@@ -15,6 +18,9 @@ export default function FormCadCliente(props) {
     const estadoInicialCliente = props.clienteParaEdicao;
     const [cliente, setCliente] = useState(estadoInicialCliente);
     const [formValidado, setFormValidado] = useState(false);
+    const {status, mensagem, listaClientes} = useSelector((state)=>state.cliente);
+    const dispatch = useDispatch();
+
     //Para depurar é necessário instalar a extensão react dev tools do chrome, em F12 aparecerá novas guias "Components", aqui é onde podemos efetivamente depurar o código, selecionando o componente e clicando em "<>"
 
 
@@ -39,30 +45,19 @@ export default function FormCadCliente(props) {
             //Enviar o cliente aqui, já que todas as informações estão corretas
             //props.inserirCliente(cliente);minha resolução
             if (!props.modoEdicao) {
-                const listaClientesOrdenada = ordenarListaClientes([...props.listaClientes, cliente]);
-                props.setListaClientes(listaClientesOrdenada);
+                dispatch(adicionar(cliente));
                 props.setMensagem('Cliente incluido com sucesso');
                 props.setTipoMensagem('success');
                 props.setMostrarMensagem(true);
             }
             else {
-                //alterar dados do cliente(filtra e adiciona)
-                props.setListaClientes([...props.listaClientes.filter((itemCliente) => itemCliente.cpf !== cliente.cpf), cliente]);
-                //Espalha o clientes filtrando o selecionado
+                dispatch(atualizar(cliente));
                 props.setModoEdicao(false);
                 props.setClienteParaEdicao(clienteVazio);
                 props.setMensagem('Cliente alterado com sucesso');
                 props.setTipoMensagem('success');
                 props.setMostrarMensagem(true);
             }
-
-            //OU
-            /*
-                let listaNova = props.listaClientes;
-                listaNova.push(cliente);
-                props.setListaCliente(listaNova);
-            */
-
             //Limpar os campos do formulario//Em outras palavras, reiniciar o estado do componente
             setCliente(clienteVazio);//Se manter a tela de formulario aberta//Ou sair da tela de formulário
             setFormValidado(false);
