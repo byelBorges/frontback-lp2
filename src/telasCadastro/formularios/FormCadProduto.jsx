@@ -1,5 +1,7 @@
 import { Col, Container, FloatingLabel, Form, Row, Button } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {adicionarProduto, atualizarProduto} from "../../redux/produtoReducer";
 export default function FormCadProduto(props) {
 
     const produtoVazio = {
@@ -12,7 +14,8 @@ export default function FormCadProduto(props) {
     const estadoInicialProduto = props.produtoParaEdicao;
     const [produto, setProduto] = useState(estadoInicialProduto)
     const [formValidado, setFormValidado] = useState(false);
-
+    const {status, mensagem, listaProdutos} = useSelector((state)=>state.produto);
+    const dispatch = useDispatch();
     function manipularMudancas(e){
         const componente = e.currentTarget;
         setProduto({...produto, [componente.name]: componente.value});
@@ -22,13 +25,13 @@ export default function FormCadProduto(props) {
         const form = e.currentTarget;
         if(form.checkValidity()){
             if(!props.modoEdicao){
-                props.setListaProdutos([...props.listaProdutos, produto]);
+                dispatch(adicionarProduto(produto));
                 props.setMensagem('Produto incluído com sucesso');
                 props.setTipoMensagem('success');
                 props.setMostrarMensagem(true);
             }
             else{
-                props.setListaProdutos([...props.listaProdutos.filter((itemProd)=> itemProd.nome !== produto.nome), produto]);
+                dispatch(atualizarProduto(produto));
                 props.setModoEdicao(false);
                 props.setProdutoParaEdicao(produtoVazio);
                 props.setMensagem('Produto alterado com sucesso');

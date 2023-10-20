@@ -21,16 +21,12 @@ export default function TelaCadastroCategoria(props) {
                 <Pagina>
                     {
                         exibirFormulario ? <FormCadCategoria exibirFormulario={setExibirFormulario}
-                            listaCategorias={listaCategorias}
-                            setListaCategorias={setListaCategorias}
                             setMostrarMensagem={setMostrarMensagem}
                             setTipoMensagem={setTipoMensagem}
                             setMensagem={setMensagem}
                         />
                             :
                             <TabelaCategorias exibirFormulario={setExibirFormulario}
-                                listaCategorias={listaCategorias}
-                                setListaCategorias={setListaCategorias}
                             />
                     }
                 </Pagina>

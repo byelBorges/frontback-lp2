@@ -4,7 +4,6 @@ import FormCadCliente from "./formularios/FormCadCliente";
 import TabelaClientes from "./tabelas/TabelaClientes";
 import { useState } from "react";
 import TelaMensagem from "./TelaMensagem";
-import { UseSelector, useDispatch } from "react-redux";
 
 //Redutores/Slices são os unicos capazes de alterar o estado da store
 

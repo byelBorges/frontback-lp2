@@ -6,7 +6,7 @@ import FormCadProduto from "./formularios/FormCadProduto";
 import { Container } from "react-bootstrap";
 export default function TelaCadastroProduto(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    const [listaProdutos, setListaProdutos] = useState([]);
+    //const [listaProdutos, setListaProdutos] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem]= useState('');
     const [tipoMensagem, setTipoMensagem] = useState('');
@@ -30,8 +30,6 @@ export default function TelaCadastroProduto(props) {
                 <Pagina>
                     {
                         exibirFormulario ? <FormCadProduto exibirFormulario={setExibirFormulario}
-                        listaProdutos={listaProdutos}
-                        setListaProdutos={setListaProdutos}
                         produtoParaEdicao={produtoParaEdicao}
                         setProdutoParaEdicao={setProdutoParaEdicao}
                         modoEdicao={modoEdicao}
@@ -42,8 +40,6 @@ export default function TelaCadastroProduto(props) {
                         /> 
                         : 
                         <TabelaProdutos exibirFormulario={setExibirFormulario}
-                        setListaProdutos={setListaProdutos}
-                        listaProdutos={listaProdutos}
                         produtoParaEdicao={produtoParaEdicao}
                         setProdutoParaEdicao={setProdutoParaEdicao}
                         modoEdicao={modoEdicao}

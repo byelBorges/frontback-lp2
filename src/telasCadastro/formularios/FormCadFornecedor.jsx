@@ -1,5 +1,7 @@
 import { Container, Form, Row, Col, FloatingLabel, Button } from "react-bootstrap"
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { adicionarFornecedor, atualizarFornecedor } from "../../redux/fornecedorReducer";
 export default function FormCadFornecedor(props) {
 
     const fornecedorVazio = {
@@ -14,18 +16,20 @@ export default function FormCadFornecedor(props) {
     const estadoInicialFornecedor = props.fornecedorParaEdicao;
     const [fornecedor, setFornecedor] = useState(estadoInicialFornecedor);
     const [formValidado, setFormValidado]= useState(false);
+    const {status, mensagem, listaFornecedores} = useSelector((state)=>state.fornecedor);
+    const dispatch = useDispatch();
 
     function manipularSubmissao(e){
         const form = e.currentTarget;
         if(form.checkValidity()){
             if(!props.modoEdicao){
-                props.setListaFornecedores([...props.listaFornecedores, fornecedor]);
+                dispatch(adicionarFornecedor(fornecedor));
                 props.setMensagem("Fornecedor incluido com sucesso!");
                 props.setTipoMensagem("success");
                 props.setMostrarMensagem(true);
             }
             else{
-                props.setListaFornecedores([...props.listaFornecedores.filter((itemFornecedor)=>itemFornecedor.cnpj !== fornecedor.cnpj), fornecedor]);
+                dispatch(atualizarFornecedor(fornecedor));
                 props.setModoEdicao(false);
                 props.setFornecedorParaEdicao(fornecedorVazio);
                 props.setMensagem("Fornecedor alterado com sucesso!");
@@ -36,7 +40,6 @@ export default function FormCadFornecedor(props) {
             setFormValidado(false);
         }
         else{
-
             setFormValidado(true);
         }
         e.stopPropagation();

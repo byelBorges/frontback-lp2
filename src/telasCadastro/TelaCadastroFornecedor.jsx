@@ -4,9 +4,10 @@ import FormCadFornecedor from "./formularios/FormCadFornecedor";
 import TabelaFornecedores from "./tabelas/TabelaFornecedores";
 import { Container } from "react-bootstrap";
 import TelaMensagem from "./TelaMensagem";
+
 export default function TelaCadastroFornecedor(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    const [listaFornecedores, setListaFornecedores] = useState([]);
+    //const [listaFornecedores, setListaFornecedores] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem] = useState('');
     const [tipoMensagem, setTipoMensagem] = useState("");
@@ -31,9 +32,7 @@ export default function TelaCadastroFornecedor(props) {
             <Container>
                 <Pagina>
                     {
-                        exibirFormulario ? <FormCadFornecedor listaFornecedores={listaFornecedores}
-                            exibirFormulario={setExibirFormulario}
-                            setListaFornecedores={setListaFornecedores}
+                        exibirFormulario ? <FormCadFornecedor exibirFormulario={setExibirFormulario}
                             fornecedorParaEdicao={fornecedorParaEdicao}
                             setFornecedorParaEdicao={setFornecedorParaEdicao}
                             modoEdicao={modoEdicao}
@@ -43,9 +42,7 @@ export default function TelaCadastroFornecedor(props) {
                             setTipoMensagem={setTipoMensagem}
                         />
                             :
-                            <TabelaFornecedores listaFornecedores={listaFornecedores}
-                                setListaFornecedores={setListaFornecedores}
-                                exibirFormulario={setExibirFormulario}
+                            <TabelaFornecedores exibirFormulario={setExibirFormulario}
                                 fornecedorParaEdicao={fornecedorParaEdicao}
                                 setFornecedorParaEdicao={setFornecedorParaEdicao}
                                 modoEdicao={modoEdicao}

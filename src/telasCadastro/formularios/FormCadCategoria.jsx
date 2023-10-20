@@ -1,5 +1,7 @@
 import { Container, Button, Row, Col, FloatingLabel, Form } from "react-bootstrap";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { adicionarCategoria } from "../../redux/categoriaReducer";
 export default function FormCadCategoria(props) {
 
     const categoriaVazia = {
@@ -7,6 +9,8 @@ export default function FormCadCategoria(props) {
     };
     const [categoria, setCategoria] = useState(categoriaVazia);
     const [formValidado, setFormValidado]= useState(false);
+    const {status, mensagem, listaCategorias} = useSelector((state)=>state.categoria);
+    const dispatch = useDispatch();
 
     function manipularMudancas(e) {
         const comp = e.currentTarget;
@@ -16,7 +20,7 @@ export default function FormCadCategoria(props) {
     function manipularSubmissao(e) {
         const formulario = e.currentTarget;
         if (formulario.checkValidity()) {
-            props.setListaCategorias([...props.listaCategorias, categoria]);
+            dispatch(adicionarCategoria(categoria));
             props.setMensagem('Categoria incluída com sucesso');
             props.setTipoMensagem('success');
             props.setMostrarMensagem(true);
