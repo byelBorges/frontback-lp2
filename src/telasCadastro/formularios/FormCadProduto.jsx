@@ -7,9 +7,11 @@ export default function FormCadProduto(props) {
     const produtoVazio = {
         nome: '',
         descricao: '',
-        quantidade: '',
-        avaliacao: '',
-        preco: ''
+        qtdEstoque: '',
+        dataValidade: '',
+        precoCusto: '',
+        precoVenda: '',
+        categoria: '',
     };
     const estadoInicialProduto = props.produtoParaEdicao;
     const [produto, setProduto] = useState(estadoInicialProduto)
@@ -69,6 +71,25 @@ export default function FormCadProduto(props) {
                             </FloatingLabel>
                         </Form.Group>
                     </Col>
+
+                    <Col>
+                    <Form.Group>
+                            <FloatingLabel
+
+                                label="Categoria:"
+                                className="mb-3"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Ex: 10,99"
+                                    id="categoria"
+                                    name="categoria"
+                                    onChange={manipularMudancas}
+                                    value={produto.categoria}
+                                    required />
+                            </FloatingLabel>
+                        </Form.Group>
+                    </Col>
                 </Row>
 
                 <Row>
@@ -97,16 +118,16 @@ export default function FormCadProduto(props) {
                         <Form.Group>
                             <FloatingLabel
 
-                                label="Quantidade:"
+                                label="Quantidade estoque:"
                                 className="mb-3"
                             >
                                 <Form.Control
                                     type="text"
                                     placeholder="Ex: 100"
-                                    id="quantidade"
-                                    name="quantidade"
+                                    id="qtdEstoque"
+                                    name="qtdEstoque"
                                     onChange={manipularMudancas}
-                                    value={produto.quantidade}
+                                    value={produto.qtdEstoque}
                                     required />
                             </FloatingLabel>
                         </Form.Group>
@@ -116,16 +137,16 @@ export default function FormCadProduto(props) {
                         <Form.Group>
                             <FloatingLabel
 
-                                label="Preço (R$):"
+                                label="Preço Custo(R$):"
                                 className="mb-3"
                             >
                                 <Form.Control
                                     type="text"
                                     placeholder="Ex: 10,99"
-                                    id="preco"
-                                    name="preco"
+                                    id="precoCusto"
+                                    name="precoCusto"
                                     onChange={manipularMudancas}
-                                    value={produto.preco}
+                                    value={produto.precoCusto}
                                     required />
                             </FloatingLabel>
                         </Form.Group>
@@ -135,22 +156,42 @@ export default function FormCadProduto(props) {
                         <Form.Group>
                             <FloatingLabel
 
-                                label="Avaliação:"
+                                label="Preço Venda(R$):"
+                                className="mb-3"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Ex: 10,99"
+                                    id="precoVenda"
+                                    name="precoVenda"
+                                    onChange={manipularMudancas}
+                                    value={produto.precoVenda}
+                                    required />
+                            </FloatingLabel>
+                        </Form.Group>
+                    </Col>
+
+                    <Col>
+                        <Form.Group>
+                            <FloatingLabel
+
+                                label="Data Validade:"
                                 className="mb-3"
                             >
                                 <Form.Control
                                     type="text"
                                     placeholder="Ex: 4,9"
-                                    id="avaliacao"
-                                    name="avaliacao"
+                                    id="dataValidade"
+                                    name="dataValidade"
                                     onChange={manipularMudancas}
-                                    value={produto.avaliacao}
+                                    value={produto.dataValidade}
                                     required />
                             </FloatingLabel>
                         </Form.Group>
                     </Col>
                 </Row>
-
+                    
+                    
                 <Row>
                     <Col>
                         <Button type="submit" variant={"primary"}>{props.modoEdicao ? "Alterar" : "Cadastrar"}</Button>
