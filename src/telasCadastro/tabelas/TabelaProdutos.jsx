@@ -1,12 +1,16 @@
 import { Container, Button, Table } from "react-bootstrap";
 import {useSelector, useDispatch} from "react-redux";
-import {removerProduto} from "../../redux/produtoReducer";
+import {buscarProdutos, excluirProduto} from "../../redux/produtoReducer.js";
+import { useEffect } from "react";
 export default function TabelaProdutos(props) {
-    const {status, mensagem, listaProdutos} = useSelector((state)=>state.produto);
+    const {status, mensagem, produtos} = useSelector((state)=>state.produto);//state.produto, produto é nome da fatia
     const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(buscarProdutos());
+    }, []);
     function excluirProduto(produto){
         if(window.confirm('Deseja realmente excluir esse cliente')){
-            dispatch(removerProduto(produto));
+            dispatch(excluirProduto(produto));
         }
     }
 
@@ -34,7 +38,7 @@ export default function TabelaProdutos(props) {
 
                 <tbody>
                     {
-                        listaProdutos.map((prod) => {
+                        produtos.map((prod) => {
                             return (
                                 <tr key={prod.nome}>
                                     <td>{prod.nome}</td>
