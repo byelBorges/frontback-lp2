@@ -1,15 +1,19 @@
 import { Container, Button, Row, Col, FloatingLabel, Form } from "react-bootstrap";
+import { toast } from "react-toastify";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { adicionarCategoria } from "../../redux/categoriaReducer";
+import { adicionarCategoria, atualizarCategoria } from "../../redux/categoriaReducer.js";
+import ESTADO from "../../redux/recursos/estado.js";
 export default function FormCadCategoria(props) {
 
     const categoriaVazia = {
+        codigo: 0,
         nome: ''
     };
-    const [categoria, setCategoria] = useState(categoriaVazia);
-    const [formValidado, setFormValidado]= useState(false);
-    const {status, mensagem, listaCategorias} = useSelector((state)=>state.categoria);
+    const estadoInicialCategoria = props.categoriaParaEdicao;
+    const [categoria, setCategoria] = useState(estadoInicialCategoria);
+    const [formValidado, setFormValidado] = useState(false);
+    const { estado, mensagem, listaCategorias } = useSelector((state) => state.categoria);
     const dispatch = useDispatch();
 
     function manipularMudancas(e) {
@@ -20,8 +24,16 @@ export default function FormCadCategoria(props) {
     function manipularSubmissao(e) {
         const formulario = e.currentTarget;
         if (formulario.checkValidity()) {
-            dispatch(adicionarCategoria(categoria));
-            props.setMensagem('Categoria incluída com sucesso');
+            if (!props.modoEdicao) {
+                dispatch(adicionarCategoria(categoria));
+                props.setMensagem('Categoria incluída com sucesso');
+            }
+            else {
+                dispatch(atualizarCategoria(categoria));
+                props.setModoEdicao(false);
+                props.setCategoriaParaEdicao(categoriaVazia);
+                props.setMensagem('Categoria alterada com sucesso');
+            }
             props.setTipoMensagem('success');
             props.setMostrarMensagem(true);
             setCategoria(categoriaVazia);
@@ -33,45 +45,62 @@ export default function FormCadCategoria(props) {
         e.stopPropagation();
         e.preventDefault();
     }
+    if (estado === ESTADO.ERRO) {
+        toast.error(({ closeToast }) => {
+            <div>
+                <p>{mensagem}</p>
+            </div>
+        }, { toastId: estado });
+    }
+    else if (estado === ESTADO.PENDENTE) {
+        toast(({ closeToast }) => {
+            <div>
+                <Spinner animation="border" role="status"></Spinner>
+                <p>Processando requisição...</p>
+            </div>
+        }, { toastId: estado });
+    }
+    else {
+        toast.dismiss();
+        return (
+            <Container>
+                <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
+                    <Row>
+                        <Col>
+                            <Form.Group>
+                                <FloatingLabel
 
-    return (
-        <Container>
-            <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
-                <Row>
-                    <Col>
-                        <Form.Group>
-                            <FloatingLabel
+                                    label="Categoria:"
+                                    className="mb-3"
+                                >
 
-                                label="Categoria:"
-                                className="mb-3"
-                            >
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Eletrodomésticos"
+                                        id="nome"
+                                        name="nome" onChange={manipularMudancas}
+                                        value={categoria.nome}
+                                        required />
 
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Eletrodomésticos"
-                                    id="nome"
-                                    name="nome" onChange={manipularMudancas}
-                                    value={categoria.nome}
-                                    required />
+                                </FloatingLabel>
+                                <Form.Control.Feedback type="invalid">Informe o nome da categoria!</Form.Control.Feedback>
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
-                            </FloatingLabel>
-                            <Form.Control.Feedback type="invalid">Informe o nome da categoria!</Form.Control.Feedback>
-                        </Form.Group>
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col md={6} offset={5}>
+                            <Button type="submit" variant={"primary"}>Cadastrar</Button>
+                        </Col>
+                        <Col md={6} offset={5}>
 
-                <Row>
-                    <Col md={6} offset={5}>
-                        <Button type="submit" variant={"primary"}>Cadastrar</Button>
-                    </Col>
-                    <Col md={6} offset={5}>
-                        
-                        <Button type="submit" variant={"secondary"} onClick={()=>{
-                            props.exibirFormulario(false);
-                        }}>Voltar</Button>
-                    </Col>
-                </Row>
-            </Form>
-        </Container>
-    );
+                            <Button type="submit" variant={"secondary"} onClick={() => {
+                                props.exibirFormulario(false);
+                            }}>Voltar</Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </Container>
+        );
+    }
 }
