@@ -9,6 +9,12 @@ export default function TelaCadastroCategoria(props) {
     const [mensagem, setMensagem] = useState('');
     const [tipoMensagem, setTipoMensagem] = useState('');
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
+    const [modoEdicao, setModoEdicao] = useState(false);
+    const [categoriaParaEdicao, setCategoriaParaEdicao] = useState({
+        codigo: '0',
+        nome: ""
+    });
+
     if (mostrarMensagem) {
         return (
             <TelaMensagem mensagem={mensagem} tipo={tipoMensagem} setMostrarMensagem={setMostrarMensagem} />
@@ -20,12 +26,20 @@ export default function TelaCadastroCategoria(props) {
                 <Pagina>
                     {
                         exibirFormulario ? <FormCadCategoria exibirFormulario={setExibirFormulario}
+                            categoriaParaEdicao={categoriaParaEdicao}
+                            setCategoriaParaEdicao={setCategoriaParaEdicao}
+                            modoEdicao={modoEdicao}
+                            setModoEdicao={setModoEdicao}
                             setMostrarMensagem={setMostrarMensagem}
                             setTipoMensagem={setTipoMensagem}
                             setMensagem={setMensagem}
                         />
                             :
                             <TabelaCategorias exibirFormulario={setExibirFormulario}
+                                categoriaParaEdicao={categoriaParaEdicao}
+                                setCategoriaParaEdicao={setCategoriaParaEdicao}
+                                modoEdicao={modoEdicao}
+                                setModoEdicao={setModoEdicao}
                             />
                     }
                 </Pagina>
