@@ -1,6 +1,6 @@
 import { Container, Table, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { remover } from "../../redux/clienteReducer";
+import { removerCliente } from "../../redux/clienteReducer.js";
 export default function TabelaClientes(props) {
 
     const {status, mensagem, listaClientes} = useSelector((state)=>state.cliente);
@@ -11,7 +11,7 @@ export default function TabelaClientes(props) {
             // props.setListaClientes(
             //     props.listaClientes.filter((itemLista => itemLista.cpf !== cliente.cpf))
             // );
-            dispatch(remover(cliente));
+            dispatch(removerCliente(cliente));
     }
 
     function editarCliente(cliente){

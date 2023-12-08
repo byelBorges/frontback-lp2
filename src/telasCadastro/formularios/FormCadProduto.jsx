@@ -79,12 +79,11 @@ export default function FormCadProduto(props) {
     return (
         <Container>
             {estado === ESTADO.ERRO ?
-                toast.error(( {closeToast}) =>{
+                toast.error(( {closeToast}) => {
                     <div>
                         <p>{mensagem}</p>
                     </div>
-                    , {toastId: estado}
-                })
+                    }, {toastId: estado})
                 :
                 null
             }

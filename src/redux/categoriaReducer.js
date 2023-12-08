@@ -1,13 +1,13 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
-import ESTADO from "./recursos/estado";
+import ESTADO from "./recursos/estado.js";
 
-const urlBase = "http://localhost:4000/categoria";
+const urlBase = "http://localhost:3000/categoria";
 
 //Thunks
 export const buscarCategorias = createAsyncThunk("categoria/buscarCategorias", async ()=>{
     try{
         const resposta = await fetch(urlBase, {method: "GET"});
-        const dados = resposta.json();
+        const dados = await resposta.json();
         if(dados.status){
             return {
                 status: true,
@@ -94,7 +94,7 @@ export const atualizarCategoria = createAsyncThunk("categoria/atualizar", async 
     }
 });
 
-export const removerCategoria = createAsyncThunk("categoria/remover", async ()=>{
+export const removerCategoria = createAsyncThunk("categoria/remover", async (categoria)=>{
     const resposta = await fetch(urlBase, {
         method: "DELETE",
         headers: {

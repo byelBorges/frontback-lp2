@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ESTADO from "./recursos/estado.js";
-const urlBase = "http://localhost:4000/produto";
+const urlBase = "http://localhost:3000/produto";
 //Thunks
 export const buscarProdutos = createAsyncThunk('buscarProdutos', async () => {
     try {

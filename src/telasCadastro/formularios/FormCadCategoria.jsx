@@ -1,4 +1,4 @@
-import { Container, Button, Row, Col, FloatingLabel, Form } from "react-bootstrap";
+import { Container, Button, Row, Col, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +13,7 @@ export default function FormCadCategoria(props) {
     const estadoInicialCategoria = props.categoriaParaEdicao;
     const [categoria, setCategoria] = useState(estadoInicialCategoria);
     const [formValidado, setFormValidado] = useState(false);
-    const { estado, mensagem, listaCategorias } = useSelector((state) => state.categoria);
+    const { estado, mensagem, categorias } = useSelector((state) => state.categoria);
     const dispatch = useDispatch();
 
     function manipularMudancas(e) {
@@ -46,19 +46,19 @@ export default function FormCadCategoria(props) {
         e.preventDefault();
     }
     if (estado === ESTADO.ERRO) {
-        toast.error(({ closeToast }) => {
+        toast.error(({ closeToast }) => (
             <div>
                 <p>{mensagem}</p>
             </div>
-        }, { toastId: estado });
+        ), { toastId: estado });
     }
     else if (estado === ESTADO.PENDENTE) {
-        toast(({ closeToast }) => {
+        toast(({ closeToast }) => (
             <div>
                 <Spinner animation="border" role="status"></Spinner>
                 <p>Processando requisição...</p>
             </div>
-        }, { toastId: estado });
+        ), { toastId: estado });
     }
     else {
         toast.dismiss();

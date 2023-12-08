@@ -1,13 +1,13 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import ESTADO from "./recursos/estado";
 
-const urlBase = "http://localhost:4000/cliente";
+const urlBase = "http://localhost:3000/cliente";
 
 //Thunks
 export const buscarClientes = createAsyncThunk("cliente/buscarClientes", async ()=>{
     try{
         const resposta = await fetch(urlBase, {method: "GET"});
-        const dados = resposta.json();
+        const dados = await resposta.json();
         if(dados.status){
             return {
                 status: true,
@@ -94,7 +94,7 @@ export const atualizarCliente = createAsyncThunk("cliente/atualizar", async (cli
     }
 });
 
-export const removerCliente = createAsyncThunk("cliente/remover", async ()=>{
+export const removerCliente = createAsyncThunk("cliente/remover", async (cliente)=>{
     const resposta = await fetch(urlBase, {
         method: "DELETE",
         headers: {

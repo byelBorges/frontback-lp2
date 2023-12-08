@@ -1,11 +1,11 @@
 import { useState } from "react";
-import TabelaCategorias from "./tabelas/TabelaCategorias";
-import FormCadCategoria from "./formularios/FormCadCategoria";
-import Pagina from "../templates/Pagina";
+import TabelaCategorias from "./tabelas/TabelaCategorias.jsx";
+import FormCadCategoria from "./formularios/FormCadCategoria.jsx";
+import Pagina from "../templates/Pagina.jsx";
 import { Container } from "react-bootstrap";
-import TelaMensagem from "./TelaMensagem";
+import TelaMensagem from "./TelaMensagem.jsx";
 export default function TelaCadastroCategoria(props) {
-    const [exibirFormulario, setExibirFormulario] = useState(0);
+    const [exibirFormulario, setExibirFormulario] = useState(false);
     const [mensagem, setMensagem] = useState('');
     const [tipoMensagem, setTipoMensagem] = useState('');
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
