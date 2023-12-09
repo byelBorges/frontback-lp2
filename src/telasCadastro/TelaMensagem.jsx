@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Pagina from "../templates/Pagina";
+import Pagina from "../templates/Pagina.jsx";
 import { Alert } from "react-bootstrap";
 
 export default function TelaMensagem(props){

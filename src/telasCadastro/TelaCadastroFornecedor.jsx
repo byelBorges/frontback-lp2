@@ -1,17 +1,18 @@
 import { useState } from "react";
 import Pagina from "../templates/Pagina";
-import FormCadFornecedor from "./formularios/FormCadFornecedor";
-import TabelaFornecedores from "./tabelas/TabelaFornecedores";
+import FormCadFornecedor from "./formularios/FormCadFornecedor.jsx";
+import TabelaFornecedores from "./tabelas/TabelaFornecedores.jsx";
 import { Container } from "react-bootstrap";
-import TelaMensagem from "./TelaMensagem";
+import TelaMensagem from "./TelaMensagem.jsx";
 
 export default function TelaCadastroFornecedor(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    //const [listaFornecedores, setListaFornecedores] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem] = useState('');
     const [tipoMensagem, setTipoMensagem] = useState("");
+    const [modoEdicao, setModoEdicao] = useState(false);
     const [fornecedorParaEdicao, setFornecedorParaEdicao] = useState({
+        codigo: '0',
         cnpj: '',
         nome: '',
         endereco: '',
@@ -19,8 +20,9 @@ export default function TelaCadastroFornecedor(props) {
         numero: '',
         cep: '',
         telefone: '',
-    })
-    const [modoEdicao, setModoEdicao] = useState(false);
+        bairro: '',
+        complemento: ''
+    });
 
     if (mostrarMensagem) {
         return (

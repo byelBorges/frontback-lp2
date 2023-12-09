@@ -1,20 +1,27 @@
-import { Container, Button, Table } from "react-bootstrap";
-import {useSelector, useDispatch} from "react-redux";
-import {buscarProdutos, excluirProduto} from "../../redux/produtoReducer.js";
+import { Container, Button, Table, Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { buscarProdutos, excluirProduto } from "../../redux/produtoReducer.js";
 import { useEffect } from "react";
+import ESTADO from "../../redux/recursos/estado.js";
+
+
 export default function TabelaProdutos(props) {
-    const {status, mensagem, produtos} = useSelector((state)=>state.produto);//state.produto, produto é nome da fatia
+    const { estado, mensagem, produtos } = useSelector((state) => state.produto);//state.produto, produto é nome da fatia
     const dispatch = useDispatch();
-    useEffect(()=>{
+
+    useEffect(() => {
         dispatch(buscarProdutos());
-    }, []);
-    function excluirProduto(produto){
-        if(window.confirm('Deseja realmente excluir esse cliente')){
+    }, [dispatch]);
+
+    function excluirProdutoSelecionado(produto) {
+        if (window.confirm('Deseja realmente excluir esse cliente')) {
             dispatch(excluirProduto(produto));
         }
+        dispatch(buscarProdutos());
     }
 
-    function editarProduto(produto){
+    function editarProduto(produto) {
         props.setProdutoParaEdicao(produto);
         props.setModoEdicao(true);
         props.exibirFormulario(true);
@@ -28,11 +35,15 @@ export default function TabelaProdutos(props) {
             <Table striped bordered hover>
                 <thead>
                     <tr>
+                        <th>Código</th>
                         <th>Nome</th>
                         <th>Descrição</th>
-                        <th>Quantidade</th>
-                        <th>Preço (R$)</th>
-                        <th>Avaliação</th>
+                        <th>Preço de Custo</th>
+                        <th>Preço de Venda</th>
+                        <th>Data de Validade</th>
+                        <th>Qtd. Estoque</th>
+                        <th>Categoria</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
 
@@ -40,14 +51,16 @@ export default function TabelaProdutos(props) {
                     {
                         produtos.map((prod) => {
                             return (
-                                <tr key={prod.nome}>
+                                <tr key={prod.codigo}>
+                                    <td>{prod.codigo}</td>
                                     <td>{prod.nome}</td>
                                     <td>{prod.descricao}</td>
-                                    <td>{prod.quantidade}</td>
-                                    <td>{prod.preco}</td>
-                                    <td>{prod.avaliacao}</td>
+                                    <td>{prod.precoCusto}</td>
+                                    <td>{prod.precoVenda}</td>
+                                    <td>{prod.dataValidade}</td>
+                                    <td>{prod.categoria.descricao}</td>
                                     <td><Button variant="danger" onClick={() => {
-                                        excluirProduto(prod);
+                                        excluirProdutoSelecionado(prod);
                                     }}>
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             width="16"

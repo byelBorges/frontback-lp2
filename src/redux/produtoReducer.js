@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ESTADO from "./recursos/estado.js";
-const urlBase = "http://localhost:3000/produto";
+const urlBase = "http://localhost:4000/produto";
 //Thunks
 export const buscarProdutos = createAsyncThunk('buscarProdutos', async () => {
     try {
@@ -89,7 +89,7 @@ export const atualizarProduto = createAsyncThunk('atualizarProduto', async (prod
     catch (erro) {
         return {
             status: false,
-            mensagem: "Não foi possível atualizar o produto: " + erro.message
+            mensagem: "Não foi possível atualizar a produto: " + erro.message
         }
     }
 });
@@ -145,7 +145,7 @@ const produtoSlice = createSlice({
             .addCase(buscarProdutos.fulfilled, (state, action) => {
                 if (action.payload.status) {
                     state.estado = ESTADO.OCIOSO;
-                    state.mensagem = "Produtos recuperados do backend!";
+                    state.mensagem = "produtos recuperados do backend!";
                     state.produtos = action.payload.listaProdutos;
                 }
                 else {
@@ -202,7 +202,7 @@ const produtoSlice = createSlice({
             })
             .addCase(excluirProduto.pending, (state, action) =>{
                 state.estado = ESTADO.PENDENTE;
-                state.mensagem = 'Processando a requisição...'
+                state.mensagem = 'Processando a requisição...';
             })
             .addCase(excluirProduto.fulfilled, (state, action) =>{
                 if (action.payload.status){
@@ -224,4 +224,3 @@ const produtoSlice = createSlice({
 });
 
 export default produtoSlice.reducer;
-//

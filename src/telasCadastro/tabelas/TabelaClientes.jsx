@@ -1,26 +1,27 @@
 import { Container, Table, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { removerCliente } from "../../redux/clienteReducer.js";
+import { excluirCliente, buscarClientes } from "../../redux/clienteReducer.js";
+import { useEffect } from "react";
 export default function TabelaClientes(props) {
 
-    const {status, mensagem, listaClientes} = useSelector((state)=>state.cliente);
+    const { estado, mensagem, clientes } = useSelector((state) => state.cliente);
     const dispatch = useDispatch();
 
-    function excluirCliente(cliente) {
+    function excluirClienteSelecionado(cliente) {
         if (window.confirm('Deseja realmente excluir esse cliente?'))
-            // props.setListaClientes(
-            //     props.listaClientes.filter((itemLista => itemLista.cpf !== cliente.cpf))
-            // );
-            dispatch(removerCliente(cliente));
+            dispatch(excluirCliente(cliente));
+        dispatch(buscarClientes());
     }
 
-    function editarCliente(cliente){
-        
+    function editarCliente(cliente) {
         props.setClienteParaEdicao(cliente);
         props.setModoEdicao(true);
         props.exibirFormulario(true);
-
     }
+
+    useEffect(()=>{
+        dispatch(buscarClientes());
+    }, [dispatch]);
 
     return (
         <Container>
@@ -39,21 +40,8 @@ export default function TabelaClientes(props) {
                     </tr>
                 </thead>
                 <tbody>
-
-                    {/*props.listaClientes.map((cliente, i) => (
-                        <tr key={i}>
-                            <td>{cliente.cpf}</td>
-                            <td>{cliente.nome}</td>
-                            <td>{cliente.endereco}</td>
-                            <td>{cliente.cidade}</td>
-                            <td>{cliente.cep}</td>
-                        </tr>
-                    ))*/
-                    }
-
                     {
-                        // props.listaClientes.map((cliente) => {
-                        listaClientes.map((cliente) => {
+                        clientes.map((cliente) => {
                             return (<tr key={cliente.cpf}>
                                 <td>{cliente.cpf}</td>
                                 <td>{cliente.nome}</td>
@@ -62,7 +50,7 @@ export default function TabelaClientes(props) {
                                 <td>{cliente.cidade + "/" + cliente.uf}</td>
                                 <td>{cliente.cep}</td>
                                 <td><Button variant="danger" onClick={() => {
-                                    excluirCliente(cliente);
+                                    excluirClienteSelecionado(cliente);
                                 }}>
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         width="16"
@@ -75,7 +63,7 @@ export default function TabelaClientes(props) {
                                     </svg>
                                 </Button>
 
-                                    <Button variant="warning" onClick={()=>{
+                                    <Button variant="warning" onClick={() => {
                                         editarCliente(cliente);
                                     }}>
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +80,7 @@ export default function TabelaClientes(props) {
                             </tr>)
                         })
                     }
-                    
+
                 </tbody>
             </Table>
         </Container>

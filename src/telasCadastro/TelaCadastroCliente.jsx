@@ -1,19 +1,20 @@
 import { Container } from "react-bootstrap";
-import Pagina from "../templates/Pagina";
-import FormCadCliente from "./formularios/FormCadCliente";
-import TabelaClientes from "./tabelas/TabelaClientes";
+import Pagina from "../templates/Pagina.jsx";
+import FormCadCliente from "./formularios/FormCadCliente.jsx";
+import TabelaClientes from "./tabelas/TabelaClientes.jsx";
 import { useState } from "react";
-import TelaMensagem from "./TelaMensagem";
+import TelaMensagem from "./TelaMensagem.jsx";
 
 //Redutores/Slices são os unicos capazes de alterar o estado da store
 
 export default function TelaCadastroCliente(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    //const [listaClientes, setListaClientes] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem] = useState("");
     const [tipoMensagem, setTipoMensagem] = useState("");
+    const [modoEdicao, setModoEdicao] = useState(false);
     const [clienteParaEdicao, setClienteParaEdicao] = useState({
+        codigo: 0,
         cpf: '',
         nome: '',
         endereco: '',
@@ -23,7 +24,6 @@ export default function TelaCadastroCliente(props) {
         uf: 'AC',
         cep: ''
     });
-    const [modoEdicao, setModoEdicao] = useState(false);
 
     if (mostrarMensagem) {
         return (

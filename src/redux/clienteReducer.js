@@ -1,204 +1,226 @@
-import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
-import ESTADO from "./recursos/estado";
-
-const urlBase = "http://localhost:3000/cliente";
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import ESTADO from "./recursos/estado.js";
+const urlBase = "http://localhost:4000/cliente";
 //Thunks
-export const buscarClientes = createAsyncThunk("cliente/buscarClientes", async ()=>{
-    try{
-        const resposta = await fetch(urlBase, {method: "GET"});
+export const buscarClientes = createAsyncThunk('buscarClientes', async () => {
+    try {
+        const resposta = await fetch(urlBase, { method: "GET" });
         const dados = await resposta.json();
-        if(dados.status){
+        if (dados.status) {
             return {
-                status: true,
-                listaclientes: dados.listaclientes,
-                mensagem: ""
+                status: dados.status,
+                mensagem: "",
+                listaClientes: dados.listaClientes
+            }
+        }
+        else {
+            return {
+                status: dados.status,
+                mensagem: dados.mensagem,
+                listaClientes: []
+            }
+        }
+    } catch (erro) {
+        return {
+            status: false,
+            mensagem: "Erro ao recuperar clientes:" + erro.message,
+            listaClientes: []
+        }
+    }
+});
+
+export const incluirCliente = createAsyncThunk('incluirCliente', async (cliente) => {
+    try {
+        const resposta = await fetch(urlBase, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(cliente)
+        });
+        const dados = await resposta.json();
+        if (dados.status){
+            cliente.codigo = dados.codigoGerado
+            return {
+                status: dados.status,
+                cliente,
+                mensagem: dados.mensagem
             }
         }
         else{
             return {
-                status: false,
-                listaclientes: [],
-                mensagem: "Ocorreu um problema ao recuperar os clientes da base de dados."
+                status: dados.status,
+                mensagem: dados.mensagem
             }
         }
     }
-    catch(erro){
+    catch (erro) {
         return {
             status: false,
-            listaclientes: [],
-            mensagem: "Ocorreu um problema ao recuperar os clientes da base de dados: " + erro.message
+            mensagem: "Não foi possível cadastrar o cliente: " + erro.message
         }
     }
 });
 
-export const adicionarCliente= createAsyncThunk("cliente/adicionar", async (cliente)=>{
-    const resposta = await fetch(urlBase, {
-        method: "POST",
-        headers:{
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(cliente)
-    })
-    .catch((erro)=>{
-        return {
-            status: false,
-            mensagem: "Ocorreu um erro ao adicionar cliente: " + erro.message
-        }
-    });
-    if(resposta.ok){
+export const atualizarCliente = createAsyncThunk('atualizarCliente', async (cliente) => {
+    try {
+        const resposta = await fetch(urlBase, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(cliente)
+        });
         const dados = await resposta.json();
-        return {
-            status: dados.status,
-            mensagem: dados.mensagem,
-            cliente
+        if (dados.status){
+            return {
+                status: dados.status,
+                cliente,
+                mensagem: dados.mensagem
+            }
+        }
+        else{
+            return {
+                status: dados.status,
+                mensagem: dados.mensagem
+            }
         }
     }
-    else{
+    catch (erro) {
         return {
             status: false,
-            mensagem: "Ocorreu um erro ao adicionar cliente.",
-            cliente
+            mensagem: "Não foi possível atualizar a cliente: " + erro.message
         }
     }
 });
 
-export const atualizarCliente = createAsyncThunk("cliente/atualizar", async (cliente) =>{
-    const resposta = fetch(urlBase, {
-        method: "PUT",
-        headers:{
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(cliente)
-    })
-    .catch((erro)=>{
-        return {
-            status: false,
-            mensagem: "Ocorreu um erro ao atualizar o cliente: "+ erro.message
-        }
-    });
-    if(resposta.ok){
+export const excluirCliente = createAsyncThunk('excluirCliente', async (cliente) => {
+    try {
+        const resposta = await fetch(urlBase, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(cliente)
+        });
         const dados = await resposta.json();
-        return {
-            status: dados.status,
-            mensagem: dados.mensagem,
-            cliente
+        if (dados.status){
+            return {
+                status: dados.status,
+                cliente,
+                mensagem: dados.mensagem
+            }
+        }
+        else{
+            return {
+                status: dados.status,
+                mensagem: dados.mensagem
+            }
         }
     }
-    else{
+    catch (erro) {
         return {
             status: false,
-            mensagem: "Ocorreu um erro ao atualizar o cliente.",
-            cliente
+            mensagem: "Não foi possível excluir o cliente: " + erro.message
         }
     }
 });
 
-export const removerCliente = createAsyncThunk("cliente/remover", async (cliente)=>{
-    const resposta = await fetch(urlBase, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(cliente)
-    })
-    .catch((erro)=>{
-        return {
-            status: false,
-            mensagem: "Ocorreu um erro ao remover o cliente: "+ erro.message,
-            cliente
-        }
-    });
-    if(resposta.ok){
-        const dados = await resposta.json();
-        return {
-            status: dados.status,
-            mensagem: dados.mensagem,
-            cliente
-        }
-    }
-    else{
-        return {
-            status: false,
-            mensagem: "Ocorreu um problema ao remover o cliente.",
-            cliente
-        }
-    }
-})
-
-const initialState = {
+const estadoInicial = {
     estado: ESTADO.OCIOSO,
     mensagem: "",
     clientes: []
 }
 
-const clienteslice = createSlice({
-    name: "cliente",
-    initialState,
+const clienteSlice = createSlice({
+    name: 'cliente',
+    initialState: estadoInicial,
     reducers: {},
-    extraReducers: (builder) =>{
+    extraReducers: (builder) => {
         builder
-            .addCase(buscarClientes.pending, (state, action)=>{
+            .addCase(buscarClientes.pending, (state, action) => {
                 state.estado = ESTADO.PENDENTE;
-                state.mensagem = "Buscando clientes...";
+                state.mensagem = 'Buscando clientes...';
             })
-            .addCase(buscarClientes.fulfilled, (state, action)=>{
-                if(action.payload.status){
+            .addCase(buscarClientes.fulfilled, (state, action) => {
+                if (action.payload.status) {
+                    state.estado = ESTADO.OCIOSO;
+                    state.mensagem = "clientes recuperados do backend!";
+                    state.clientes = action.payload.listaClientes;
+                }
+                else {
+                    state.estado = ESTADO.ERRO;
+                    state.mensagem = action.payload.mensagem;
+                    state.clientes = [];
+                }
+            })
+            .addCase(buscarClientes.rejected, (state, action) => {
+                state.estado = ESTADO.ERRO;
+                state.mensagem = action.payload.mensagem;
+                state.clientes = [];
+            })
+            .addCase(incluirCliente.pending, (state, action) =>{
+                state.estado = ESTADO.PENDENTE;
+                state.mensagem = 'Processando a requisição...'
+            })
+            .addCase(incluirCliente.fulfilled, (state, action) =>{
+                if (action.payload.status){
                     state.estado = ESTADO.OCIOSO;
                     state.mensagem = action.payload.mensagem;
-                    state.clientes = action.payload.listaclientes;
+                    //É preciso também atualizar o estado da aplicação e não somente o backend
+                    state.clientes.push(action.payload.cliente);
                 }
                 else{
                     state.estado = ESTADO.ERRO;
                     state.mensagem = action.payload.mensagem;
                 }
             })
-            .addCase(buscarClientes.rejected, (state, action)=>{
-                state.estado= ESTADO.ERRO;
-                state.mensagem= action.error.message;
-            })
-            .addCase(adicionarCliente.fulfilled, (state, action) => {
-                state.estado = ESTADO.OCIOSO;
-                state.clientes.push(action.payload.cliente);
-                state.mensagem = action.payload.mensagem;
-            })
-            .addCase(adicionarCliente.pending, (state, action) => {
-                state.estado = ESTADO.PENDENTE;
-                state.mensagem = "Adicionando cliente...";
-            })
-            .addCase(adicionarCliente.rejected, (state, action) => {
-                state.mensagem = "Erro ao adicionar o cliente: " + action.error.message;
+            .addCase(incluirCliente.rejected, (state, action) => {
                 state.estado = ESTADO.ERRO;
-            })
-            .addCase(atualizarCliente.fulfilled, (state, action) => {
-                state.estado = ESTADO.OCIOSO;
-                const indice = state.clientes.findIndex(cliente => cliente.codigo === action.payload.cliente.codigo);
-                state.clientes[indice] = action.payload.cliente;
                 state.mensagem = action.payload.mensagem;
-
             })
-            .addCase(atualizarCliente.pending, (state, action) => {
+            .addCase(atualizarCliente.pending, (state, action) =>{
                 state.estado = ESTADO.PENDENTE;
-                state.mensagem = "Atualizando cliente...";
+                state.mensagem = 'Processando a requisição...'
+            })
+            .addCase(atualizarCliente.fulfilled, (state, action) =>{
+                if (action.payload.status){
+                    state.estado = ESTADO.OCIOSO;
+                    state.mensagem = action.payload.mensagem;
+                    //É preciso também atualizar o estado da aplicação e não somente o backend
+                    const indice = state.clientes.findIndex((cliente) => cliente.codigo === action.payload.cliente.codigo);
+                    state.clientes[indice]=action.payload.cliente;
+                }
+                else{
+                    state.estado = ESTADO.ERRO;
+                    state.mensagem = action.payload.mensagem;
+                }
             })
             .addCase(atualizarCliente.rejected, (state, action) => {
-                state.mensagem = "Erro ao atualizar o cliente: " + action.error.message;
                 state.estado = ESTADO.ERRO;
-            })
-            .addCase(removerCliente.fulfilled, (state, action) => {
-                state.estado = ESTADO.OCIOSO;
                 state.mensagem = action.payload.mensagem;
-                state.clientes = state.clientes.filter(cliente => cliente.codigo !== action.payload.cliente.codigo);
             })
-            .addCase(removerCliente.pending, (state, action) => {
+            .addCase(excluirCliente.pending, (state, action) =>{
                 state.estado = ESTADO.PENDENTE;
-                state.mensagem = "Removendo cliente...";
+                state.mensagem = 'Processando a requisição...';
             })
-            .addCase(removerCliente.rejected, (state, action) => {
-                state.mensagem = "Erro ao remover a cliente: " + action.error.message;
+            .addCase(excluirCliente.fulfilled, (state, action) =>{
+                if (action.payload.status){
+                    state.estado = ESTADO.OCIOSO;
+                    state.mensagem = action.payload.mensagem;
+                    //É preciso também atualizar o estado da aplicação e não somente o backend
+                    state.clientes = state.clientes.filter((cliente) => cliente.codigo !== action.payload.cliente.codigo);
+                }
+                else{
+                    state.estado = ESTADO.ERRO;
+                    state.mensagem = action.payload.mensagem;
+                }
+            })
+            .addCase(excluirCliente.rejected, (state, action) => {
                 state.estado = ESTADO.ERRO;
+                state.mensagem = action.payload.mensagem;
             })
     }
 });
 
-export default clienteslice.reducer;
+export default clienteSlice.reducer;

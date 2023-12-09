@@ -1,23 +1,30 @@
 import { useState } from "react";
-import Pagina from "../templates/Pagina";
-import TelaMensagem from "./TelaMensagem";
-import TabelaProdutos from "./tabelas/TabelaProdutos";
-import FormCadProduto from "./formularios/FormCadProduto";
+import Pagina from "../templates/Pagina.jsx";
+import TelaMensagem from "./TelaMensagem.jsx";
+import TabelaProdutos from "./tabelas/TabelaProdutos.jsx";
+import FormCadProduto from "./formularios/FormCadProduto.jsx";
 import { Container } from "react-bootstrap";
+
 export default function TelaCadastroProduto(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    //const [listaProdutos, setListaProdutos] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem]= useState('');
     const [tipoMensagem, setTipoMensagem] = useState('');
+    const [modoEdicao, setModoEdicao]= useState(false);
     const [produtoParaEdicao, setProdutoParaEdicao]= useState({
+        codigo: 0,
         nome: '',
         descricao: '',
-        quantidade: '',
-        avaliacao:'',
-        preco: ''
+        qtdEstoque: '',
+        dataValidade: '',
+        precoCusto: '',
+        precoVenda: '',
+        categoria: {
+            codigo: 0,
+            descricao: '',
+        },
     });
-    const [modoEdicao, setModoEdicao]= useState(false);
+    
 
     if (mostrarMensagem) {
         return(
@@ -44,6 +51,7 @@ export default function TelaCadastroProduto(props) {
                         setProdutoParaEdicao={setProdutoParaEdicao}
                         modoEdicao={modoEdicao}
                         setModoEdicao={setModoEdicao}
+                        
                         />
                         //If else só funciona fora do return
                     }

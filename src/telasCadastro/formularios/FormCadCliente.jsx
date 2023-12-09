@@ -1,12 +1,13 @@
 import { Container, Form, Row, Col, FloatingLabel, Button, Spinner } from "react-bootstrap"
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { adicionarCliente, atualizarCliente } from '../../redux/clienteReducer.js';
+import { incluirCliente, atualizarCliente } from '../../redux/clienteReducer.js';
 import ESTADO from "../../redux/recursos/estado.js";
 import { toast } from "react-toastify";
 export default function FormCadCliente(props) {
     //Os atributos deste objeto devem estar associados aos inputs do formulario
     const clienteVazio = {
+        codigo: 0,
         cpf: '',
         nome: '',
         endereco: '',
@@ -19,7 +20,7 @@ export default function FormCadCliente(props) {
     const estadoInicialCliente = props.clienteParaEdicao;
     const [cliente, setCliente] = useState(estadoInicialCliente);
     const [formValidado, setFormValidado] = useState(false);
-    const { estado, mensagem, listaClientes } = useSelector((state) => state.cliente);
+    const { estado, mensagem, clientes } = useSelector((state) => state.cliente);
     const dispatch = useDispatch();
 
     //Para depurar é necessário instalar a extensão react dev tools do chrome, em F12 aparecerá novas guias "Components", aqui é onde podemos efetivamente depurar o código, selecionando o componente e clicando em "<>"
@@ -46,7 +47,7 @@ export default function FormCadCliente(props) {
             //Enviar o cliente aqui, já que todas as informações estão corretas
             //props.inserirCliente(cliente);minha resolução
             if (!props.modoEdicao) {
-                dispatch(adicionarCliente(cliente));
+                dispatch(incluirCliente(cliente));
                 props.setMensagem('Cliente incluido com sucesso');
             }
             else {
@@ -67,24 +68,6 @@ export default function FormCadCliente(props) {
         e.stopPropagation();
         e.preventDefault();
     }
-
-    if (estado === ESTADO.ERRO) {
-        toast.error(({ closeToast }) =>
-            <div>
-                <p>{mensagem}</p>
-
-            </div>
-            , { toastId: estado });
-    }
-    else if (estado === ESTADO.PENDENTE) {
-        toast(({ closeToast }) =>
-            <div>
-                <Spinner animation="border" role="status"></Spinner>
-                <p>Processando a requisição...</p>
-            </div>
-            , { toastId: estado });
-    }
-    else {
         return (
             <Container>
                 <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
@@ -289,5 +272,4 @@ export default function FormCadCliente(props) {
                 </Form>
             </Container>
         );
-    }
 }

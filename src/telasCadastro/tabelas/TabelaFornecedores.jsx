@@ -1,13 +1,17 @@
 import { Container, Table, Button } from "react-bootstrap";
-import {useSelector, useDispatch} from 'react-redux';
-import {removerFornecedor} from '../../redux/fornecedorReducer';
+import { useSelector, useDispatch} from 'react-redux';
+import { buscarFornecedores, excluirFornecedor} from '../../redux/fornecedorReducer.js';
+import { useEffect } from "react";
+
 export default function TabelaFornecedores(props) {
-    const {status, mensagem, listaFornecedores} = useSelector((state)=> state.fornecedor);
+    const {estado, mensagem, fornecedores} = useSelector((state)=> state.fornecedor);
     const dispatch = useDispatch();
-    function excluirFornecedor(fornecedor) {
+
+    function excluirFornecedorSelecionado(fornecedor) {
         if(window.confirm("Deseja realmente excluir este fornecedor?")){
-            dispatch(removerFornecedor(fornecedor));
+            dispatch(excluirFornecedor(fornecedor));
         }
+        dispatch(buscarFornecedores());
     }
 
     function alterarFornecedor(fornecedor) {
@@ -15,6 +19,10 @@ export default function TabelaFornecedores(props) {
         props.setModoEdicao(true);
         props.exibirFormulario(true);
     }
+
+    useEffect(()=>{
+        dispatch(buscarFornecedores());
+    }, [dispatch]);
 
     return (
         <Container>
@@ -24,11 +32,14 @@ export default function TabelaFornecedores(props) {
             <Table striped bordered hover>
                 <thead>
                     <tr>
+                        <th>Código</th>
                         <th>CNPJ</th>
                         <th>Nome Fantasia</th>
                         <th>E-mail</th>
                         <th>Telefone</th>
                         <th>Endereço</th>
+                        <th>Bairro</th>
+                        <th>Complemento</th>
                         <th>N°</th>
                         <th>CEP</th>
                     </tr>
@@ -36,18 +47,21 @@ export default function TabelaFornecedores(props) {
 
                 <tbody>
                     {
-                        listaFornecedores.map((fornecedor) => {
+                        fornecedores.map((fornecedor) => {
                             return (
-                                <tr key={fornecedor.cnpj}>
+                                <tr key={fornecedor.codigo}>
+                                    <td>{fornecedor.codigo}</td>
                                     <td>{fornecedor.cnpj}</td>
                                     <td>{fornecedor.nome}</td>
                                     <td>{fornecedor.email}</td>
                                     <td>{fornecedor.telefone}</td>
                                     <td>{fornecedor.endereco}</td>
+                                    <td>{fornecedor.bairro}</td>
+                                    <td>{fornecedor.complemento}</td>
                                     <td>{fornecedor.numero}</td>
                                     <td>{fornecedor.cep}</td>
                                     <td><Button variant="danger" onClick={() => {
-                                        excluirFornecedor(fornecedor);
+                                        excluirFornecedorSelecionado(fornecedor);
                                     }}>
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             width="16"

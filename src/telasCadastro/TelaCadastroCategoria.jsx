@@ -12,7 +12,7 @@ export default function TelaCadastroCategoria(props) {
     const [modoEdicao, setModoEdicao] = useState(false);
     const [categoriaParaEdicao, setCategoriaParaEdicao] = useState({
         codigo: '0',
-        nome: ""
+        descricao: ""
     });
 
     if (mostrarMensagem) {
