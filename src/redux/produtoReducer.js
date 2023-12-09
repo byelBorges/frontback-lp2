@@ -40,7 +40,7 @@ export const incluirProduto = createAsyncThunk('incluirProduto', async (produto)
         });
         const dados = await resposta.json();
         if (dados.status){
-            produto.codigo = dados.codigoGerado
+            produto.codigo = dados.codigoGerado;
             return {
                 status: dados.status,
                 produto,

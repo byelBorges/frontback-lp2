@@ -58,6 +58,7 @@ export default function TabelaProdutos(props) {
                                     <td>{prod.precoCusto}</td>
                                     <td>{prod.precoVenda}</td>
                                     <td>{prod.dataValidade}</td>
+                                    <td>{prod.qtdEstoque}</td>
                                     <td>{prod.categoria.descricao}</td>
                                     <td><Button variant="danger" onClick={() => {
                                         excluirProdutoSelecionado(prod);
