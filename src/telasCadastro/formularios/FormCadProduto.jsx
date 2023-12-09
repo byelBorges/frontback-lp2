@@ -2,7 +2,7 @@ import { Col, Container, FloatingLabel, Form, Row, Button, Spinner } from "react
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { incluirProduto, atualizarProduto } from "../../redux/produtoReducer.js";
-import buscarCategorias from "../../redux/categoriaReducer.js";
+import { buscarCategorias } from "../../redux/categoriaReducer.js";
 import { toast } from "react-toastify"
 import ESTADO from "../../redux/recursos/estado.js";
 export default function FormCadProduto(props) {
@@ -115,29 +115,32 @@ export default function FormCadProduto(props) {
                                     name="categoria"
                                     onChange={selecionarCategoria}
                                     value={produto.categoria.codigo}
-                                    required />
-                                <option value="0" defaultValue>Selecione uma categoria</option>
-                                {
-                                    categorias?.map((categoria) =>
-                                        <option key={categoria.codigo} value={categoria.codigo}>
-                                            {categoria.descricao}
-                                        </option>
-                                    )
-                                }
-                                {
-                                    estadoCat === ESTADO.PENDENTE ?
-                                        <Spinner animation="border" role="status">
-                                            <span className="visually-hidden">Carregando categorias...</span>
-                                        </Spinner>
-                                        :
-                                        null
-                                }
-                                {
-                                    estadoCat === ESTADO.ERRO ?
-                                        <p>Erro ao carregar as categorias: {mensagemCat}</p>
-                                        :
-                                        null
-                                }
+                                    required >
+                                    <option value="0" defaultValue>Selecione uma categoria</option>
+                                    {
+                                        categorias.map((categoria) => {
+                                            return (
+                                                <option key={categoria.codigo} value={categoria.codigo}>
+                                                    {categoria.descricao}
+                                                </option>
+                                            );
+                                        })
+                                    }
+                                    {
+                                        estadoCat === ESTADO.PENDENTE ?
+                                            <Spinner animation="border" role="status">
+                                                <span className="visually-hidden">Carregando categorias...</span>
+                                            </Spinner>
+                                            :
+                                            null
+                                    }
+                                    {
+                                        estadoCat === ESTADO.ERRO ?
+                                            <p>Erro ao carregar as categorias: {mensagemCat}</p>
+                                            :
+                                            null
+                                    }
+                                </Form.Select>
                             </FloatingLabel>
                         </Form.Group>
                     </Col>
