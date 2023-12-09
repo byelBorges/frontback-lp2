@@ -110,7 +110,7 @@ export default function FormCadProduto(props) {
                             >
                                 <Form.Select
                                     type="text"
-                                    placeholder="Ex: 10,99"
+                                    placeholder="Ex: 2"
                                     id="categoria"
                                     name="categoria"
                                     onChange={selecionarCategoria}
@@ -229,12 +229,12 @@ export default function FormCadProduto(props) {
                         <Form.Group>
                             <FloatingLabel
 
-                                label="Data Validade:"
+                                label="Data Validade: AAAA-MM-DD"
                                 className="mb-3"
                             >
                                 <Form.Control
                                     type="text"
-                                    placeholder="Ex: 4,9"
+                                    placeholder="AAAA-MM-DD"
                                     id="dataValidade"
                                     name="dataValidade"
                                     onChange={manipularMudancas}

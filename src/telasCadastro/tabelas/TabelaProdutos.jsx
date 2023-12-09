@@ -55,8 +55,8 @@ export default function TabelaProdutos(props) {
                                     <td>{prod.codigo}</td>
                                     <td>{prod.nome}</td>
                                     <td>{prod.descricao}</td>
-                                    <td>{prod.precoCusto}</td>
-                                    <td>{prod.precoVenda}</td>
+                                    <td>{"R$ "+prod.precoCusto}</td>
+                                    <td>{"R$ "+prod.precoVenda}</td>
                                     <td>{prod.dataValidade}</td>
                                     <td>{prod.qtdEstoque}</td>
                                     <td>{prod.categoria.descricao}</td>
