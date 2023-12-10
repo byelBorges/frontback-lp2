@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ESTADO from "./recursos/estado.js";
-const urlBase = "http://localhost:4000/fornecedor";
+const urlBase = "http://localhost:4000/venda";
 //Thunks
-export const buscarFornecedores = createAsyncThunk('buscarFornecedores', async () => {
+export const buscarVendas = createAsyncThunk('buscarVendas', async () => {
     try {
         const resposta = await fetch(urlBase, { method: "GET" });
         const dados = await resposta.json();
@@ -10,40 +10,40 @@ export const buscarFornecedores = createAsyncThunk('buscarFornecedores', async (
             return {
                 status: dados.status,
                 mensagem: "",
-                listaFornecedores: dados.listaFornecedores
+                listaVendas: dados.listaVendas
             }
         }
         else {
             return {
                 status: dados.status,
                 mensagem: dados.mensagem,
-                listaFornecedores: []
+                listaVendas: []
             }
         }
     } catch (erro) {
         return {
             status: false,
-            mensagem: "Erro ao recuperar fornecedores:" + erro.message,
-            listaFornecedores: []
+            mensagem: "Erro ao recuperar vendas:" + erro.message,
+            listaVendas: []
         }
     }
 });
 
-export const incluirFornecedor = createAsyncThunk('incluirFornecedor', async (fornecedor) => {
+export const incluirVenda = createAsyncThunk('incluirVenda', async (venda) => {
     try {
         const resposta = await fetch(urlBase, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(fornecedor)
+            body: JSON.stringify(venda)
         });
         const dados = await resposta.json();
         if (dados.status){
-            fornecedor.codigo = dados.codigoGerado;
+            venda.codigo = dados.codigoGerado;
             return {
                 status: dados.status,
-                fornecedor,
+                venda,
                 mensagem: dados.mensagem
             }
         }
@@ -57,25 +57,25 @@ export const incluirFornecedor = createAsyncThunk('incluirFornecedor', async (fo
     catch (erro) {
         return {
             status: false,
-            mensagem: "Não foi possível cadastrar o fornecedor: " + erro.message
+            mensagem: "Não foi possível cadastrar o venda: " + erro.message
         }
     }
 });
 
-export const atualizarFornecedor = createAsyncThunk('atualizarFornecedor', async (fornecedor) => {
+export const atualizarVenda = createAsyncThunk('atualizarVenda', async (venda) => {
     try {
         const resposta = await fetch(urlBase, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(fornecedor)
+            body: JSON.stringify(venda)
         });
         const dados = await resposta.json();
         if (dados.status){
             return {
                 status: dados.status,
-                fornecedor,
+                venda,
                 mensagem: dados.mensagem
             }
         }
@@ -89,25 +89,25 @@ export const atualizarFornecedor = createAsyncThunk('atualizarFornecedor', async
     catch (erro) {
         return {
             status: false,
-            mensagem: "Não foi possível atualizar a fornecedor: " + erro.message
+            mensagem: "Não foi possível atualizar a venda: " + erro.message
         }
     }
 });
 
-export const excluirFornecedor = createAsyncThunk('excluirFornecedor', async (fornecedor) => {
+export const excluirVenda = createAsyncThunk('excluirVenda', async (venda) => {
     try {
         const resposta = await fetch(urlBase, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(fornecedor)
+            body: JSON.stringify(venda)
         });
         const dados = await resposta.json();
         if (dados.status){
             return {
                 status: dados.status,
-                fornecedor,
+                venda,
                 mensagem: dados.mensagem
             }
         }
@@ -121,7 +121,7 @@ export const excluirFornecedor = createAsyncThunk('excluirFornecedor', async (fo
     catch (erro) {
         return {
             status: false,
-            mensagem: "Não foi possível excluir o fornecedor: " + erro.message
+            mensagem: "Não foi possível excluir o venda: " + erro.message
         }
     }
 });
@@ -129,98 +129,98 @@ export const excluirFornecedor = createAsyncThunk('excluirFornecedor', async (fo
 const estadoInicial = {
     estado: ESTADO.OCIOSO,
     mensagem: "",
-    fornecedores: []
+    vendas: []
 }
 
-const fornecedorSlice = createSlice({
-    name: 'fornecedor',
+const vendaSlice = createSlice({
+    name: 'venda',
     initialState: estadoInicial,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(buscarFornecedores.pending, (state, action) => {
+            .addCase(buscarVendas.pending, (state, action) => {
                 state.estado = ESTADO.PENDENTE;
-                state.mensagem = 'Buscando fornecedores...';
+                state.mensagem = 'Buscando vendas...';
             })
-            .addCase(buscarFornecedores.fulfilled, (state, action) => {
+            .addCase(buscarVendas.fulfilled, (state, action) => {
                 if (action.payload.status) {
                     state.estado = ESTADO.OCIOSO;
-                    state.mensagem = "fornecedores recuperados do backend!";
-                    state.fornecedores = action.payload.listaFornecedores;
+                    state.mensagem = "vendas recuperados do backend!";
+                    state.vendas = action.payload.listaVendas;
                 }
                 else {
                     state.estado = ESTADO.ERRO;
                     state.mensagem = action.payload.mensagem;
-                    state.fornecedores = [];
+                    state.vendas = [];
                 }
             })
-            .addCase(buscarFornecedores.rejected, (state, action) => {
+            .addCase(buscarVendas.rejected, (state, action) => {
                 state.estado = ESTADO.ERRO;
                 state.mensagem = action.payload.mensagem;
-                state.fornecedores = [];
+                state.vendas = [];
             })
-            .addCase(incluirFornecedor.pending, (state, action) =>{
+            .addCase(incluirVenda.pending, (state, action) =>{
                 state.estado = ESTADO.PENDENTE;
                 state.mensagem = 'Processando a requisição...'
             })
-            .addCase(incluirFornecedor.fulfilled, (state, action) =>{
+            .addCase(incluirVenda.fulfilled, (state, action) =>{
                 if (action.payload.status){
                     state.estado = ESTADO.OCIOSO;
                     state.mensagem = action.payload.mensagem;
                     //É preciso também atualizar o estado da aplicação e não somente o backend
-                    state.fornecedores.push(action.payload.fornecedor);
+                    state.vendas.push(action.payload.venda);
                 }
                 else{
                     state.estado = ESTADO.ERRO;
                     state.mensagem = action.payload.mensagem;
                 }
             })
-            .addCase(incluirFornecedor.rejected, (state, action) => {
+            .addCase(incluirVenda.rejected, (state, action) => {
                 state.estado = ESTADO.ERRO;
                 state.mensagem = action.payload.mensagem;
             })
-            .addCase(atualizarFornecedor.pending, (state, action) =>{
+            .addCase(atualizarVenda.pending, (state, action) =>{
                 state.estado = ESTADO.PENDENTE;
                 state.mensagem = 'Processando a requisição...'
             })
-            .addCase(atualizarFornecedor.fulfilled, (state, action) =>{
+            .addCase(atualizarVenda.fulfilled, (state, action) =>{
                 if (action.payload.status){
                     state.estado = ESTADO.OCIOSO;
                     state.mensagem = action.payload.mensagem;
                     //É preciso também atualizar o estado da aplicação e não somente o backend
-                    const indice = state.fornecedores.findIndex((fornecedor) => fornecedor.codigo === action.payload.fornecedor.codigo);
-                    state.fornecedores[indice]=action.payload.fornecedor;
+                    const indice = state.vendas.findIndex((venda) => venda.codigo === action.payload.venda.codigo);
+                    state.vendas[indice]=action.payload.venda;
                 }
                 else{
                     state.estado = ESTADO.ERRO;
                     state.mensagem = action.payload.mensagem;
                 }
             })
-            .addCase(atualizarFornecedor.rejected, (state, action) => {
+            .addCase(atualizarVenda.rejected, (state, action) => {
                 state.estado = ESTADO.ERRO;
                 state.mensagem = action.payload.mensagem;
             })
-            .addCase(excluirFornecedor.pending, (state, action) =>{
+            .addCase(excluirVenda.pending, (state, action) =>{
                 state.estado = ESTADO.PENDENTE;
                 state.mensagem = 'Processando a requisição...';
             })
-            .addCase(excluirFornecedor.fulfilled, (state, action) =>{
+            .addCase(excluirVenda.fulfilled, (state, action) =>{
                 if (action.payload.status){
                     state.estado = ESTADO.OCIOSO;
                     state.mensagem = action.payload.mensagem;
                     //É preciso também atualizar o estado da aplicação e não somente o backend
-                    state.fornecedores = state.fornecedores.filter((fornecedor) => fornecedor.codigo !== action.payload.fornecedor.codigo);
+                    state.vendas = state.vendas.filter((venda) => venda.codigo !== action.payload.venda.codigo);
                 }
                 else{
                     state.estado = ESTADO.ERRO;
                     state.mensagem = action.payload.mensagem;
                 }
             })
-            .addCase(excluirFornecedor.rejected, (state, action) => {
+            .addCase(excluirVenda.rejected, (state, action) => {
                 state.estado = ESTADO.ERRO;
                 state.mensagem = action.payload.mensagem;
             })
     }
 });
 
-export default fornecedorSlice.reducer;
+export default vendaSlice.reducer;
