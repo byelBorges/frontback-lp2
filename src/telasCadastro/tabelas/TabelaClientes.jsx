@@ -10,7 +10,6 @@ export default function TabelaClientes(props) {
     function excluirClienteSelecionado(cliente) {
         if (window.confirm('Deseja realmente excluir esse cliente?'))
             dispatch(excluirCliente(cliente));
-        dispatch(buscarClientes());
     }
 
     function editarCliente(cliente) {
@@ -21,7 +20,7 @@ export default function TabelaClientes(props) {
 
     useEffect(()=>{
         dispatch(buscarClientes());
-    }, [dispatch]);
+    }, [clientes, dispatch]);
 
     return (
         <Container>

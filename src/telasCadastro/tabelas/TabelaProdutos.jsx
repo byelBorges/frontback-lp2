@@ -12,13 +12,12 @@ export default function TabelaProdutos(props) {
 
     useEffect(() => {
         dispatch(buscarProdutos());
-    }, [dispatch]);
+    }, [produtos, dispatch]);
 
     function excluirProdutoSelecionado(produto) {
         if (window.confirm('Deseja realmente excluir esse cliente')) {
             dispatch(excluirProduto(produto));
         }
-        dispatch(buscarProdutos());
     }
 
     function editarProduto(produto) {

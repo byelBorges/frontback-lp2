@@ -9,15 +9,12 @@ export default function TabelaVendas(props) {
     const { estado, mensagem, vendas } = useSelector((state) => state.venda);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(buscarVendas());
-    }, [dispatch]);
+    
 
     function excluirVendaSelecionada(venda) {
         if (window.confirm('Deseja realmente excluir esse cliente')) {
             dispatch(excluirVenda(venda));
         }
-        dispatch(buscarVendas());
     }
 
     function editarVenda(venda) {
@@ -25,6 +22,10 @@ export default function TabelaVendas(props) {
         props.setModoEdicao(true);
         props.exibirFormulario(true);
     }
+
+    useEffect(() => {
+        dispatch(buscarVendas());
+    }, [vendas, dispatch]);
 
     return (
         <Container>

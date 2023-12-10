@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { incluirFornecedor, atualizarFornecedor } from "../../redux/fornecedorReducer.js";
 
 export default function FormCadFornecedor(props) {
-
+    
     const fornecedorVazio = {
         codigo: 0,
         cnpj: '',

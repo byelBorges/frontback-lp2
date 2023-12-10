@@ -11,7 +11,6 @@ export default function TabelaFornecedores(props) {
         if(window.confirm("Deseja realmente excluir este fornecedor?")){
             dispatch(excluirFornecedor(fornecedor));
         }
-        dispatch(buscarFornecedores());
     }
 
     function alterarFornecedor(fornecedor) {
@@ -22,7 +21,7 @@ export default function TabelaFornecedores(props) {
 
     useEffect(()=>{
         dispatch(buscarFornecedores());
-    }, [dispatch]);
+    }, [fornecedores, dispatch]);
 
     return (
         <Container>

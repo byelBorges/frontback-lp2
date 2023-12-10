@@ -12,7 +12,6 @@ export default function TabelaCategorias(props) {
     function excluirCategoriaSelecionada(cat) {
         if (window.confirm('Deseja excluir esta categoria?'))
             dispatch(excluirCategoria(cat));
-        dispatch(buscarCategorias());
     }
 
     function editarCategoria(cat) {
@@ -23,7 +22,7 @@ export default function TabelaCategorias(props) {
 
     useEffect(() => {
         dispatch(buscarCategorias());
-    }, [dispatch]);
+    }, [categorias, dispatch]);
 
 
     return (
